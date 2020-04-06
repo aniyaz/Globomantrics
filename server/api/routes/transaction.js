@@ -1,0 +1,75 @@
+const Transaction = require('../../models/transaction')
+const mongoose = require('mongoose')
+
+module.exports = function(router){
+    //Get transaction for given month, year by userId
+    router.get('/transaction/:year/:month', function(req, res){
+        const userId = req.get('userId')
+        const month = req.params.month - 1  //JS months starts with zero
+        const year = req.param.year
+        const startDt = new Date(Date.UTC(year, month, 1, 0, 0, 0))
+        const endDt = new Date(Date.UTC(year, month + 1, 1, 0, 0, 0))
+
+        const qry = {
+            userId: userId,
+            transactionDate: {
+                $gte: startDt,
+                $lt: endDt
+            }
+        }
+
+        Transaction.find(qry)
+            .sort({ 'transactionDate': 1 })
+            .exec()
+            .then(docs => res.status(200)
+                .json(docs))
+            .catch(err => res.status(500)
+                .json({
+                    message: 'Error finding transactions for user',
+                    error: err
+                }))
+        })
+
+        //get transactions running balance for a specific user...
+        router.get('/transaction/balance/:year/:month', function(req, res) {
+            const userId = req.get('userId')
+            const month = req.params.month - 1 //jS months zero-based
+            const year = req.params.year
+            const endDt = new Date(Date.UTC(year, month, 1))
+            const pipeline = [
+                {
+                    $match: {
+                        userId: mongoose.Types.ObjectId(userId)
+                    },
+                    $match: {
+                        transactionDate: { $lt: endDt }
+                    }
+                },
+                {
+                    $group: {
+                        _id: null,
+                        charges: { $num: '$charge' },
+                        deposits: { $num: '$deposit' }
+                    }
+                }
+            ]
+
+            Transaction.aggregate(pipeline).exec()
+                .then(docs => res.status(200)
+                    .json(docs))
+                .catch(err => res.status(500)
+                    .json({
+                        message: 'Error Finding transactions for user',
+                        error: err
+                    }))
+        })
+
+        //create new transaction document
+        router.post('/transaction', function(req, res) {
+            let transaction = new Transaction(req.body)
+            transaction.save(function (err, transaction) {
+                if(err) return console.log(err)
+                res.status(200).json(transaction)
+            })
+        })
+}
