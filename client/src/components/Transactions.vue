@@ -107,7 +107,21 @@ export default {
   },
   methods: {
     getTransactionsByMonth: function () {
-      this.$store.dispatch('getTransactionsByMonth')
+      let me = this
+      me.items = []
+      this.$http.get('./transaction/' + me.currentYear + '/' + me.currentMonth,
+        {headers: {'userId': '5a777f0a75f64a1698221d98'}})
+          .then((resp) => {
+            let data = resp.data
+            if(data && data.length > 0) {
+              data.forEach(transactions => {
+                me.items.push(me.mapTransaction(transaction))
+              })
+            }
+          })
+          .catch((err) => {
+            console.log('Dang it!' + err)
+          })
     },
     getPreviousMonthsBalances: function () {
       this.$store.dispatch('getPreviousMonthsBalances')

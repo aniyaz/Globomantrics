@@ -3,17 +3,19 @@ const app = express()
 const api = require('./api')
 const morgan = require('morgan')
 const bodyParser = require('body-parser')
+const cors = require('cors')
 
 app.set('port', (process.env.PORT || 8081))
 
+app.use(cors())
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 
 app.use('/api', api)
 app.use(express.static('static'))
 
-app.use(morgan('dev'))
 
+app.use(morgan('dev'))
 app.use(function (req, res, next) {
     const err = new Error('Not Found')
     err.status = 404
