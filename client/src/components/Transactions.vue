@@ -5,17 +5,17 @@
         Transactions for {{ months[currentMonth].name }} - {{ currentYear }}
       </span>
       <v-btn flat icon class="pr-2" v-on:click="gotoMonth(-1)">
-        <v-icon>keyboard_arrow_left</v-icon>
+        <v-icon>mdi-chevron-left</v-icon>
       </v-btn>
       <v-btn flat icon class="pr-2" v-on:click="gotoCurrentMonth">
-        <v-icon>today</v-icon>
+        <v-icon>mdi-calendar-today</v-icon>
       </v-btn>
       <v-btn flat icon v-on:click="gotoMonth(1)">
-        <v-icon>keyboard_arrow_right</v-icon>
+        <v-icon>mdi-chevron-right</v-icon>
       </v-btn>
       <v-spacer></v-spacer>
       <v-text-field
-        append-icon="search"
+        append-icon="mdi-magnify"
         label="Search"
         single-line
         hide-details

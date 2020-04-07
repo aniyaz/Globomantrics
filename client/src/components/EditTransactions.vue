@@ -9,7 +9,7 @@
       fixed
       @click.stop="showEditTransactionDialog"
     >
-      <v-icon>add</v-icon>
+      <v-icon>mdi-plus</v-icon>
     </v-btn>
     <v-dialog v-model="dialog" width="800px">
       <v-card>
@@ -37,7 +37,7 @@
                   slot="activator"
                   label="Select Transaction Date"
                   v-model="transaction.transactionDate"
-                  prepend-icon="event"
+                  prepend-icon="mdi-calendar-today"
                   readonly
                 ></v-text-field>                
                 <v-date-picker
@@ -49,7 +49,7 @@
             </v-flex>
             <v-flex xs12>
               <v-select
-                prepend-icon="credit_card"
+                prepend-icon="mdi-credit-card"
                 v-bind:items="transactionTypes"
                 v-model="transaction.transactionType"
                 label="Transaction Type"
@@ -59,28 +59,28 @@
             </v-flex>
             <v-flex xs12>
               <v-text-field
-                prepend-icon="description"
+                prepend-icon="mdi-text"
                 placeholder="Description"
                 v-model="transaction.description"
               ></v-text-field>
             </v-flex>
             <v-flex xs6>
               <v-text-field
-                prepend-icon="remove_circle"
+                prepend-icon="mdi-minus-circle"
                 placeholder="Charge (-)"
                 v-model="transaction.charge"
               ></v-text-field>
             </v-flex>
             <v-flex xs6>
               <v-text-field
-                prepend-icon="add_circle"
+                prepend-icon="mdi-plus-circle"
                 placeholder="Deposit (+)"
                 v-model="transaction.deposit"
               ></v-text-field>
             </v-flex>
             <v-flex xs12>
               <v-text-field
-                prepend-icon="message"
+                prepend-icon="mdi-message-text"
                 placeholder="Notes"
                 v-model="transaction.notes"
               ></v-text-field>
