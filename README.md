@@ -16,7 +16,7 @@ $npm run build
 
 $npm run dev
 
-$code .   // If you're using VSCode
+$code .                   #(for VSCode user)
 
 
 #Reach out to me for any help.
