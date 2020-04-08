@@ -33,7 +33,7 @@ const state = {
     getTransactionsByMonth ({ commit, state, rootState }, payload) {
       // Make API call... Pass in selected Month and Year + UserId in hearder...
       // Once transaction data is retrieved... commit the mutation to update state...
-      Vue.axios.get('/transaction/' + state.currentYear + '/' + state.currentMonth,
+      Vue.axios.get('/transaction/' + state.currentYear + '/' + state.currentMonth,    //made transactions
         {headers: { 'userId': rootState.user.userId }})
         .then((resp) => {
           let data = resp.data
@@ -48,10 +48,10 @@ const state = {
     getPreviousMonthsBalances ({ commit, state, rootState }, payload) {
       commit('transactionsByMonth', [])
       // Make API call... Pass in selected Month and Year + UserId in hearder...
-      Vue.axios.get('/transaction/balance/' + state.currentYear + '/' + state.currentMonth,
+      Vue.axios.get('/transaction/balance/' + state.currentYear + '/' + state.currentMonth,          //made transactions
         {headers: { 'userId': rootState.user.userId }})
         .then((resp) => {
-          console.log('GET transaction/balance', resp)
+          console.log('GET transaction/balance', resp) //made transactions
           let data = resp.data
           if (data && data.length > 0) {
             commit('balanceCharges', data[0].charges)
@@ -70,6 +70,21 @@ const state = {
     },
     async gotoCurrentMonth ({ commit }) {
       commit('gotoCurrentMonth')
+    },
+    saveTransaction ({ commit, dispatch, state, rootState }, transaction) {
+      // Add the logged in userId to the transaction payload...
+      transaction.userId = rootState.user.userId
+  
+      Vue.axios.post('/transaction', transaction)  //made transactions
+        .then((resp) => {
+          dispatch('getTransactionsByMonth').then(() => {
+            dispatch('getPreviousMonthsBalances')
+          })
+        })
+        .catch((err) => {
+          console.log('Error saving transaction')
+          console.log(err)
+        })
     }
   }
   

@@ -69,9 +69,21 @@
 </template>
 
 <script>
+import { mapGetters, mapState } from 'vuex'
+
 export default {
   computed: {
-    currentMonth () {
+    ...mapState({
+      months: state => state.transactions.months,
+      currentYear: state => state.transactions.currentYear,
+      currentMonth: state => state.transactions.currentMonth
+    }),
+    ...mapGetters({
+      items: 'transactionsByMonth',
+      balanceCharges: 'balanceCharges',
+      balanceDeposits: 'balanceDeposits'
+    })
+   /* currentMonth () {
       return this.$store.state.transactions.currentMonth
     },
     currentYear () {
@@ -88,7 +100,7 @@ export default {
     },
     balanceDeposits () {
       return this.$store.getters.balanceDeposits
-    }
+    } */
   },
   data () {
     return {
